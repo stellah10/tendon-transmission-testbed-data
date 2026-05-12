@@ -1,9 +1,52 @@
+<!DOCTYPE html>
 <html>
 
-<body>
-  <h1>YOUR NAME</h1>
-  <p>Welcome to my website!</p>
-  <img src="https://content.codecademy.com/articles/github-pages-via-web-app/happy-ice-cream.gif" />
-</body>
+<head>
+    <title>Transmission Testbed Viewer</title>
 
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>Transmission Testbed Results</h1>
+
+<div class="controls">
+
+    <label>Transmission Type:</label>
+    <select id="transmission" onchange="updateOptions()">
+        <option value="pulley">Pulley</option>
+        <option value="bowden">Bowden Tube</option>
+    </select>
+
+    <label>Wrap Angle:</label>
+    <select id="angle">
+        <option value="90">90°</option>
+        <option value="180">180°</option>
+    </select>
+
+    <div id="constraintContainer">
+
+        <label>Constraint:</label>
+
+        <select id="constraint">
+            <option value="constrained">Constrained</option>
+            <option value="unconstrained">Unconstrained</option>
+        </select>
+
+    </div>
+
+    <button onclick="showGraph()">
+        Show Graph
+    </button>
+
+</div>
+
+<div class="graph-container">
+    <img id="graphImage" src="" alt="Graph will appear here">
+</div>
+
+<script src="script.js"></script>
+
+</body>
 </html>
