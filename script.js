@@ -27,7 +27,7 @@ function showGraph() {
     if (transmission === "pulley") {
 
         filename =
-            `graphs/pulley_${angle}.png`;
+            `graphs/pulley/${angle}.png`;
     }
 
     else {
@@ -36,8 +36,10 @@ function showGraph() {
             document.getElementById("constraint").value;
 
         filename =
-            `graphs/bowden_${constraint}_${angle}.png`;
+            `graphs/bowden/${constraint}/${angle}.png`;
     }
+
+    console.log(filename);
 
     document.getElementById("graphImage").src =
         filename;
