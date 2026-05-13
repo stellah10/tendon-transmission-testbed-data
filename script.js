@@ -6,8 +6,11 @@ function updateOptions() {
     const constraintContainer =
         document.getElementById("constraintContainer");
 
-    constraintContainer.hidden =
-        (transmission === "pulley");
+    if (transmission === "pulley") {
+        constraintContainer.hidden = true;
+    } else {
+        constraintContainer.hidden = false;
+    }
 }
 
 async function showGraph() {
@@ -21,11 +24,8 @@ async function showGraph() {
     let folder = "";
 
     if (transmission === "pulley") {
-
         folder = `graphs/pulley/${angle}`;
-
     } else {
-
         const constraint =
             document.getElementById("constraint").value;
 
