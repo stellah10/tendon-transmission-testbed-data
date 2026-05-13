@@ -6,16 +6,14 @@ function updateOptions() {
     const constraintContainer =
         document.getElementById("constraintContainer");
 
-    // Hide constraint options for pulley
-
     if (transmission === "pulley") {
 
-        constraintContainer.style.display = "none";
+        constraintContainer.hidden = true;
     }
 
     else {
 
-        constraintContainer.style.display = "block";
+        constraintContainer.hidden = false;
     }
 }
 
