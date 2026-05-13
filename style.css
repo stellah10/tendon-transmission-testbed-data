@@ -132,3 +132,30 @@ button {
 
     color: #cccccc;
 }
+
+.modalButtons {
+
+    text-align: center;
+
+    margin-top: 20px;
+}
+
+.modalButtons button {
+
+    padding: 10px 20px;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background-color: white;
+}
+
+.modalButtons button:hover {
+
+    background-color: #dddddd;
+}

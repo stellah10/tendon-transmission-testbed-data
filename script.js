@@ -92,7 +92,7 @@ async function showGraph() {
 // ===============================
 // MODAL LOGIC
 // ===============================
-function openModal(src) {
+function openModal(imageSrc) {
 
     const modal =
         document.getElementById("imageModal");
@@ -100,7 +100,17 @@ function openModal(src) {
     const modalImg =
         document.getElementById("modalImage");
 
-    modalImg.src = src;
+    const downloadButton =
+        document.getElementById("downloadButton");
+
+    modalImg.src = imageSrc;
+
+    // Convert .png path to .xlsx path
+    const excelSrc =
+        imageSrc.replace(".png", ".xlsx");
+
+    downloadButton.href = excelSrc;
+
     modal.style.display = "block";
 }
 
