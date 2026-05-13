@@ -45,21 +45,33 @@ async function showGraph() {
     // Summary
     // ---------------------------
     // Summary
-    try {
-        const response = await fetch(`${folder}/summary.txt`);
+    const summaryEl = document.getElementById("summary");
 
+    try {
+        const response = await fetch(`${folder}/summary.txt`, {
+            cache: "no-store"
+        });
+
+        // IMPORTANT: stop here if file doesn't exist
         if (!response.ok) {
-            throw new Error("Missing file");
+            summaryEl.innerText = "Still in progress.";
+            return;
         }
 
-        const summary = await response.text();
-        document.getElementById("summary").innerText = summary;
+        const text = await response.text();
 
-    } catch (e) {
-        console.log(e);
-        document.getElementById("summary").innerText = "Still in progress.";
+        // extra safety: GitHub Pages sometimes returns HTML 404 with 200-ish behavior
+        if (text.trim().startsWith("<!DOCTYPE html>")) {
+            summaryEl.innerText = "Still in progress.";
+            return;
+        }
+
+        summaryEl.innerText = text;
+
+    } catch (err) {
+        console.log(err);
+        summaryEl.innerText = "Still in progress.";
     }
-
     // ---------------------------
     // Graph images
     // ---------------------------
