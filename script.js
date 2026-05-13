@@ -118,19 +118,35 @@ function closeModal() {
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
 
-    const closeButton =
-        document.querySelector(".close");
-
     const modal =
         document.getElementById("imageModal");
 
-    closeButton.addEventListener("click", () => {
-        modal.style.display = "none";
-    });
+    const closeButton =
+        document.querySelector(".close");
 
+    // ---------------------------
+    // SAFE GUARD (THIS IS CRITICAL)
+    // ---------------------------
+    if (!modal) {
+        console.error("Modal not found in DOM");
+        return;
+    }
+
+    if (closeButton) {
+
+        closeButton.addEventListener("click", (e) => {
+            e.stopPropagation(); // prevents bubbling issues
+            closeModal();
+        });
+
+    } else {
+        console.error("Close button not found (.close)");
+    }
+
+    // click outside image closes modal
     modal.addEventListener("click", (event) => {
         if (event.target === modal) {
-            modal.style.display = "none";
+            closeModal();
         }
     });
 });
