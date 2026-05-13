@@ -112,6 +112,14 @@ function openModal(imageSrc) {
     downloadButton.href =
         excelSrc;
 
+    // Extract filename only
+    const fileName =
+        excelSrc.split("/").pop();
+
+    // Update button text dynamically
+    downloadButton.innerText =
+        `Open ${fileName} Data`;
+
     modal.style.display =
         "block";
 }
