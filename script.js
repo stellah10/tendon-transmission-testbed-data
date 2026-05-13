@@ -1,3 +1,6 @@
+// ===============================
+// UI TOGGLE
+// ===============================
 function updateOptions() {
 
     const transmission =
@@ -6,13 +9,14 @@ function updateOptions() {
     const constraintContainer =
         document.getElementById("constraintContainer");
 
-    if (transmission === "pulley") {
-        constraintContainer.hidden = true;
-    } else {
-        constraintContainer.hidden = false;
-    }
+    constraintContainer.hidden =
+        (transmission === "pulley");
 }
 
+
+// ===============================
+// MAIN GRAPH LOADER
+// ===============================
 async function showGraph() {
 
     const transmission =
@@ -24,8 +28,11 @@ async function showGraph() {
     let folder = "";
 
     if (transmission === "pulley") {
+
         folder = `graphs/pulley/${angle}`;
+
     } else {
+
         const constraint =
             document.getElementById("constraint").value;
 
@@ -34,6 +41,9 @@ async function showGraph() {
 
     console.log("Loading:", folder);
 
+    // ---------------------------
+    // Summary
+    // ---------------------------
     try {
 
         const response =
@@ -44,10 +54,15 @@ async function showGraph() {
 
     } catch (e) {
 
+        console.log(e);
+
         document.getElementById("summary").innerText =
             "No summary available.";
     }
 
+    // ---------------------------
+    // Graph images
+    // ---------------------------
     const graphContainer =
         document.getElementById("graphContainer");
 
@@ -61,19 +76,67 @@ async function showGraph() {
 
         img.src = `${folder}/${trial}`;
         img.className = "graphImage";
+        img.alt = trial;
 
-        img.onclick = () => {
-
-            const modal =
-                document.getElementById("imageModal");
-
-            const modalImg =
-                document.getElementById("modalImage");
-
-            modal.style.display = "block";
-            modalImg.src = img.src;
-        };
+        img.onclick = () => openModal(img.src);
 
         graphContainer.appendChild(img);
     }
 }
+
+
+// ===============================
+// MODAL LOGIC
+// ===============================
+function openModal(src) {
+
+    const modal =
+        document.getElementById("imageModal");
+
+    const modalImg =
+        document.getElementById("modalImage");
+
+    modalImg.src = src;
+    modal.style.display = "block";
+}
+
+function closeModal() {
+
+    const modal =
+        document.getElementById("imageModal");
+
+    const modalImg =
+        document.getElementById("modalImage");
+
+    modal.style.display = "none";
+    modalImg.src = "";
+}
+
+
+// ===============================
+// INIT (runs once DOM is ready)
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+
+    // set correct initial UI state
+    updateOptions();
+
+    const modal =
+        document.getElementById("imageModal");
+
+    const closeButton =
+        document.querySelector(".close");
+
+    // close button (X)
+    if (closeButton) {
+        closeButton.onclick = closeModal;
+    }
+
+    // click outside image closes modal
+    modal.onclick = (event) => {
+
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+});
