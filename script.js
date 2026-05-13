@@ -20,87 +20,63 @@ function updateOptions() {
 async function showGraph() {
 
     const graphContainer = document.getElementById("graphContainer");
-    graphContainer.innerHTML = "";
-
     const summaryEl = document.getElementById("summary");
-    summaryEl.innerText = "";
 
-    const transmission =
-        document.getElementById("transmission").value;
+    // ALWAYS CLEAR FIRST
+    graphContainer.innerHTML = "";
+    summaryEl.innerText = "Loading...";
 
-    const angle =
-        document.getElementById("angle").value;
+    const transmission = document.getElementById("transmission").value;
+    const angle = document.getElementById("angle").value;
 
     let folder = "";
 
     if (transmission === "pulley") {
-
         folder = `graphs/pulley/${angle}`;
-
     } else {
-
-        const constraint =
-            document.getElementById("constraint").value;
-
+        const constraint = document.getElementById("constraint").value;
         folder = `graphs/bowden/${constraint}/${angle}`;
     }
 
-    console.log("Loading:", folder);
+    console.log("Trying folder:", folder);
 
-    // ---------------------------
-    // Summary
-    // ---------------------------
-    // Summary
-    const summaryEl = document.getElementById("summary");
+    // -----------------------
+    // CHECK IF DATA EXISTS
+    // -----------------------
+    const summaryURL = `${folder}/summary.txt`;
 
-    try {
-        const response = await fetch(`${folder}/summary.txt`, {
-            cache: "no-store"
-        });
+    const response = await fetch(summaryURL, { cache: "no-store" });
 
-        // IMPORTANT: stop here if file doesn't exist
-        if (!response.ok) {
-            summaryEl.innerText = "Still in progress.";
-            return;
-        }
-
-        const text = await response.text();
-
-        // extra safety: GitHub Pages sometimes returns HTML 404 with 200-ish behavior
-        if (text.trim().startsWith("<!DOCTYPE html>")) {
-            summaryEl.innerText = "Still in progress.";
-            return;
-        }
-
-        summaryEl.innerText = text;
-
-    } catch (err) {
-        console.log(err);
+    if (!response.ok) {
         summaryEl.innerText = "Still in progress.";
+        graphContainer.innerHTML = ""; // ensure clean state
+        return;
     }
-    // ---------------------------
-    // Graph images
-    // ---------------------------
-    const graphContainer =
-        document.getElementById("graphContainer");
 
-    graphContainer.innerHTML = "";
+    const summaryText = await response.text();
 
-    const response =
-        await fetch(`${folder}/trials.json`);
+    if (summaryText.trim().startsWith("<!DOCTYPE html>")) {
+        summaryEl.innerText = "Still in progress.";
+        graphContainer.innerHTML = "";
+        return;
+    }
 
-    const trials =
-        await response.json();
+    summaryEl.innerText = summaryText;
+
+    // -----------------------
+    // LOAD IMAGES ONLY IF VALID
+    // -----------------------
+    const trials = ["trial1.png", "trial2.png", "trial3.png", "trial4.png"];
 
     for (const trial of trials) {
+        const imgPath = `${folder}/${trial}`;
 
         const img = document.createElement("img");
-
-        img.src = `${folder}/${trial}`;
+        img.src = imgPath;
         img.className = "graphImage";
         img.alt = trial;
 
-        img.onclick = () => openModal(img.src);
+        img.onclick = () => openModal(imgPath);
 
         graphContainer.appendChild(img);
     }
