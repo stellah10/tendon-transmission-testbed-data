@@ -19,6 +19,12 @@ function updateOptions() {
 // ===============================
 async function showGraph() {
 
+    const graphContainer = document.getElementById("graphContainer");
+    graphContainer.innerHTML = "";
+
+    const summaryEl = document.getElementById("summary");
+    summaryEl.innerText = "";
+
     const transmission =
         document.getElementById("transmission").value;
 
