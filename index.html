@@ -1,88 +1,116 @@
-<!DOCTYPE html>
-<html>
+document.addEventListener("DOMContentLoaded", () => {
 
-<head>
+    // ---------------------------
+    // INITIAL UI STATE
+    // ---------------------------
+    updateOptions();
 
-    <title>Transmission Testbed Viewer</title>
+    const modal =
+        document.getElementById("imageModal");
 
-    <link rel="stylesheet" href="style.css">
+    const closeButton =
+        document.getElementsByClassName("close")[0];
 
-</head>
+    closeButton.onclick = () => {
+        modal.style.display = "none";
+    };
 
-<body>
+    modal.onclick = (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    };
 
-<h1>Transmission Testbed Results</h1>
+    // ---------------------------
+    // FUNCTIONS
+    // ---------------------------
 
-<div class="controls">
+    window.updateOptions = function () {
 
-    <label>Transmission Type:</label>
+        const transmission =
+            document.getElementById("transmission").value;
 
-    <select id="transmission" onchange="updateOptions()">
+        const constraintContainer =
+            document.getElementById("constraintContainer");
 
-        <option value="pulley">
-            Pulley
-        </option>
+        constraintContainer.hidden =
+            (transmission === "pulley");
+    };
 
-        <option value="bowden">
-            Bowden Tube
-        </option>
+    window.showGraph = async function () {
 
-    </select>
+        const transmission =
+            document.getElementById("transmission").value;
 
-    <label>Wrap Angle:</label>
+        const angle =
+            document.getElementById("angle").value;
 
-    <select id="angle">
+        let folder = "";
 
-        <option value="90">
-            90°
-        </option>
+        if (transmission === "pulley") {
 
-        <option value="180">
-            180°
-        </option>
+            folder = `graphs/pulley/${angle}`;
 
-    </select>
+        } else {
 
-    <div id="constraintContainer" hidden>
+            const constraint =
+                document.getElementById("constraint").value;
 
-        <label>Constraint:</label>
+            folder = `graphs/bowden/${constraint}/${angle}`;
+        }
 
-        <select id="constraint">
+        console.log("Loading:", folder);
 
-            <option value="constrained">
-                Constrained
-            </option>
+        // Summary
+        try {
 
-            <option value="unconstrained">
-                Unconstrained
-            </option>
+            const response =
+                await fetch(`${folder}/summary.txt`);
 
-        </select>
+            const summary =
+                await response.text();
 
-    </div>
+            document.getElementById("summary").innerText =
+                summary;
 
-    <button onclick="showGraph()">
+        } catch (e) {
 
-        Show Graph
+            console.log(e);
 
-    </button>
+            document.getElementById("summary").innerText =
+                "No summary available.";
+        }
 
-</div>
+        // Images
+        const graphContainer =
+            document.getElementById("graphContainer");
 
-<div id="summary"></div>
+        graphContainer.innerHTML = "";
 
-<div id="graphContainer"></div>
+        const trials = [
+            "trial1.png",
+            "trial2.png",
+            "trial3.png"
+        ];
 
-<div id="imageModal" class="modal">
+        for (const trial of trials) {
 
-    <span class="close">&times;</span>
+            const img =
+                document.createElement("img");
 
-    <img class="modalContent" id="modalImage">
+            img.src = `${folder}/${trial}`;
+            img.className = "graphImage";
+            img.alt = trial;
 
-</div>
+            img.onclick = () => {
 
-<script src="script.js"></script>
+                modal.style.display = "block";
+                document.getElementById("modalImage").src =
+                    img.src;
+            };
 
-</body>
+            graphContainer.appendChild(img);
+        }
+    };
 
-</html>
+});
