@@ -7,12 +7,8 @@ function updateOptions() {
         document.getElementById("constraintContainer");
 
     if (transmission === "pulley") {
-
         constraintContainer.hidden = true;
-    }
-
-    else {
-
+    } else {
         constraintContainer.hidden = false;
     }
 }
@@ -31,23 +27,19 @@ async function showGraph() {
 
     if (transmission === "pulley") {
 
-        folder =
-            `graphs/pulley/${angle}`;
-    }
+        folder = `graphs/pulley/${angle}`;
 
-    else {
+    } else {
 
         const constraint =
             document.getElementById("constraint").value;
 
-        folder =
-            `graphs/bowden/${constraint}/${angle}`;
+        folder = `graphs/bowden/${constraint}/${angle}`;
     }
 
-    console.log(folder);
+    console.log("Loading from:", folder);
 
     // Load summary
-
     try {
 
         const response =
@@ -58,18 +50,16 @@ async function showGraph() {
 
         document.getElementById("summary").innerText =
             summary;
-    }
 
-    catch (error) {
+    } catch (error) {
 
-        console.log(error);
+        console.log("Summary load error:", error);
 
         document.getElementById("summary").innerText =
             "No summary available.";
     }
 
     // Display trial images
-
     const graphContainer =
         document.getElementById("graphContainer");
 
@@ -83,50 +73,47 @@ async function showGraph() {
 
     for (const trial of trials) {
 
-        const img =
-            document.createElement("img");
+        const img = document.createElement("img");
 
-        img.src =
-            `${folder}/${trial}`;
+        img.src = `${folder}/${trial}`;
+        img.className = "graphImage";
+        img.alt = trial;
 
-        img.className =
-            "graphImage";
+        // click to enlarge
+        img.onclick = () => {
 
-        img.alt =
-            trial;
+            const modal =
+                document.getElementById("imageModal");
 
-        img.onclick = function () {
+            const modalImg =
+                document.getElementById("modalImage");
 
-            document.getElementById("imageModal").style.display =
-                "block";
-
-            document.getElementById("modalImage").src =
-                this.src;
+            modal.style.display = "block";
+            modalImg.src = img.src;
         };
 
         graphContainer.appendChild(img);
     }
 }
 
-// Run immediately when page loads
+// Ensure DOM is ready before wiring modal + initial state
+document.addEventListener("DOMContentLoaded", () => {
 
-updateOptions();
+    updateOptions();
 
-const modal =
-    document.getElementById("imageModal");
+    const modal =
+        document.getElementById("imageModal");
 
-const closeButton =
-    document.getElementsByClassName("close")[0];
+    const closeButton =
+        document.getElementsByClassName("close")[0];
 
-closeButton.onclick = function () {
-
-    modal.style.display = "none";
-};
-
-modal.onclick = function (event) {
-
-    if (event.target === modal) {
-
+    closeButton.onclick = function () {
         modal.style.display = "none";
-    }
-};
+    };
+
+    modal.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    };
+});
