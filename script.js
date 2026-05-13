@@ -44,20 +44,20 @@ async function showGraph() {
     // ---------------------------
     // Summary
     // ---------------------------
+    // Summary
     try {
+        const response = await fetch(`${folder}/summary.txt`);
 
-        const response =
-            await fetch(`${folder}/summary.txt`);
+        if (!response.ok) {
+            throw new Error("Missing file");
+        }
 
-        document.getElementById("summary").innerText =
-            await response.text();
+        const summary = await response.text();
+        document.getElementById("summary").innerText = summary;
 
     } catch (e) {
-
         console.log(e);
-
-        document.getElementById("summary").innerText =
-            "No summary available.";
+        document.getElementById("summary").innerText = "Still in progress.";
     }
 
     // ---------------------------
