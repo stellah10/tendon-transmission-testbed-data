@@ -20,14 +20,59 @@ button {
     padding: 8px 16px;
 }
 
-.graph-container {
+
+/* ===============================
+   GRAPH LAYOUT
+=============================== */
+
+#graphContainer {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 20px;
+
+    justify-content: center;
+
+    align-items: flex-start;
+
     margin-top: 30px;
 }
 
-#graphImage {
-    max-width: 100%;
+.graphImage {
+
+    width: 250px;
+
+    height: 180px;
+
+    object-fit: contain;
+
     border: 1px solid #ccc;
+
+    border-radius: 8px;
+
+    background-color: white;
+
+    padding: 8px;
+
+    cursor: pointer;
+
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
 }
+
+.graphImage:hover {
+
+    transform: scale(1.03);
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+
+/* ===============================
+   MODAL
+=============================== */
 
 .modal {
 
@@ -36,8 +81,6 @@ button {
     position: fixed;
 
     z-index: 1000;
-
-    padding-top: 40px;
 
     left: 0;
     top: 0;
@@ -56,8 +99,13 @@ button {
 
     margin: auto;
 
-    max-width: 95%;
+    margin-top: 40px;
+
+    max-width: 90%;
+
     max-height: 90%;
+
+    object-fit: contain;
 }
 
 .close {
@@ -71,24 +119,16 @@ button {
 
     font-size: 40px;
 
+    font-weight: bold;
+
     cursor: pointer;
+
+    z-index: 2000;
+
+    user-select: none;
 }
 
-.graphImage {
+.close:hover {
 
-    width: 90%;
-    max-width: 900px;
-
-    height: auto;
-
-    border: 1px solid #ccc;
-
-    margin-bottom: 30px;
-
-    margin-left: auto;
-    margin-right: auto;
-
-    display: block;
-
-    cursor: pointer;
+    color: #cccccc;
 }

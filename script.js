@@ -68,7 +68,11 @@ async function showGraph() {
 
     graphContainer.innerHTML = "";
 
-    const trials = ["trial1.png", "trial2.png", "trial3.png"];
+    const response =
+        await fetch(`${folder}/trials.json`);
+
+    const trials =
+        await response.json();
 
     for (const trial of trials) {
 
