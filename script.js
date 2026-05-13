@@ -118,25 +118,19 @@ function closeModal() {
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
 
-    // set correct initial UI state
-    updateOptions();
+    const closeButton =
+        document.querySelector(".close");
 
     const modal =
         document.getElementById("imageModal");
 
-    const closeButton =
-        document.querySelector(".close");
+    closeButton.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
 
-    // close button (X)
-    if (closeButton) {
-        closeButton.onclick = closeModal;
-    }
-
-    // click outside image closes modal
-    modal.onclick = (event) => {
-
+    modal.addEventListener("click", (event) => {
         if (event.target === modal) {
-            closeModal();
+            modal.style.display = "none";
         }
-    };
+    });
 });
