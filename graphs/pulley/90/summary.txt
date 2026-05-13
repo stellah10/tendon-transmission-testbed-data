@@ -1,1 +1,1 @@
-test
+The cross-trial efficiency (N=4) for a pulley with drum radius 5.9 mm at a wrap angle of 90 degrees is 98.8% with a standard deviation of 0.128.
