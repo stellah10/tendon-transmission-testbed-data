@@ -105,13 +105,15 @@ function openModal(imageSrc) {
 
     modalImg.src = imageSrc;
 
-    // Convert .png path to .xlsx path
+    // Convert image path to spreadsheet path
     const excelSrc =
         imageSrc.replace(".png", ".xlsx");
 
-    downloadButton.href = excelSrc;
+    downloadButton.href =
+        excelSrc;
 
-    modal.style.display = "block";
+    modal.style.display =
+        "block";
 }
 
 function closeModal() {
