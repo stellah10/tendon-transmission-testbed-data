@@ -95,6 +95,15 @@ async function showGraph() {
         img.alt =
             trial;
 
+        img.onclick = function () {
+
+            document.getElementById("imageModal").style.display =
+                "block";
+
+            document.getElementById("modalImage").src =
+                this.src;
+        };
+
         graphContainer.appendChild(img);
     }
 }
@@ -102,3 +111,22 @@ async function showGraph() {
 // Run immediately when page loads
 
 updateOptions();
+
+const modal =
+    document.getElementById("imageModal");
+
+const closeButton =
+    document.getElementsByClassName("close")[0];
+
+closeButton.onclick = function () {
+
+    modal.style.display = "none";
+};
+
+modal.onclick = function (event) {
+
+    if (event.target === modal) {
+
+        modal.style.display = "none";
+    }
+};
