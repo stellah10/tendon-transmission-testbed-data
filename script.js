@@ -1,5 +1,4 @@
-
-window.updateOptions = function () {
+function updateOptions() {
 
     const transmission =
         document.getElementById("transmission").value;
@@ -9,9 +8,9 @@ window.updateOptions = function () {
 
     constraintContainer.hidden =
         (transmission === "pulley");
-};
+}
 
-window.showGraph = async function () {
+async function showGraph() {
 
     const transmission =
         document.getElementById("transmission").value;
@@ -35,17 +34,13 @@ window.showGraph = async function () {
 
     console.log("Loading:", folder);
 
-    // Summary
     try {
 
         const response =
             await fetch(`${folder}/summary.txt`);
 
-        const summary =
-            await response.text();
-
         document.getElementById("summary").innerText =
-            summary;
+            await response.text();
 
     } catch (e) {
 
@@ -53,17 +48,12 @@ window.showGraph = async function () {
             "No summary available.";
     }
 
-    // Images
     const graphContainer =
         document.getElementById("graphContainer");
 
     graphContainer.innerHTML = "";
 
-    const trials = [
-        "trial1.png",
-        "trial2.png",
-        "trial3.png"
-    ];
+    const trials = ["trial1.png", "trial2.png", "trial3.png"];
 
     for (const trial of trials) {
 
@@ -71,7 +61,6 @@ window.showGraph = async function () {
 
         img.src = `${folder}/${trial}`;
         img.className = "graphImage";
-        img.alt = trial;
 
         img.onclick = () => {
 
@@ -87,30 +76,4 @@ window.showGraph = async function () {
 
         graphContainer.appendChild(img);
     }
-};
-
-
-// ---------------------------
-// SAFE INIT (AFTER FUNCTIONS EXIST)
-// ---------------------------
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    updateOptions();
-
-    const modal =
-        document.getElementById("imageModal");
-
-    const closeButton =
-        document.getElementsByClassName("close")[0];
-
-    closeButton.onclick = () => {
-        modal.style.display = "none";
-    };
-
-    modal.onclick = (event) => {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
-    };
-});
+}
