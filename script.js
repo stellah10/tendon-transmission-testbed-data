@@ -1,3 +1,24 @@
+function updateOptions() {
+
+    const transmission =
+        document.getElementById("transmission").value;
+
+    const constraintContainer =
+        document.getElementById("constraintContainer");
+
+    // Hide constraint options for pulley
+
+    if (transmission === "pulley") {
+
+        constraintContainer.style.display = "none";
+    }
+
+    else {
+
+        constraintContainer.style.display = "block";
+    }
+}
+
 async function showGraph() {
 
     const transmission =
@@ -7,6 +28,8 @@ async function showGraph() {
         document.getElementById("angle").value;
 
     let folder = "";
+
+    // Build folder path
 
     if (transmission === "pulley") {
 
@@ -23,7 +46,9 @@ async function showGraph() {
             `graphs/bowden/${constraint}/${angle}`;
     }
 
-    // Load summary text
+    console.log(folder);
+
+    // Load summary
 
     try {
 
@@ -37,13 +62,15 @@ async function showGraph() {
             summary;
     }
 
-    catch {
+    catch (error) {
+
+        console.log(error);
 
         document.getElementById("summary").innerText =
             "No summary available.";
     }
 
-    // Display trial graphs
+    // Display trial images
 
     const graphContainer =
         document.getElementById("graphContainer");
@@ -64,8 +91,16 @@ async function showGraph() {
         img.src =
             `${folder}/${trial}`;
 
-        img.className = "graphImage";
+        img.className =
+            "graphImage";
+
+        img.alt =
+            trial;
 
         graphContainer.appendChild(img);
     }
 }
+
+// Run immediately when page loads
+
+updateOptions();
